@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-info {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        .quiz-info h2 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .quiz-info p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .language-selector {
+            margin-bottom: 30px;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .language-selector select {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-selector select:hover {
+            border-color: #667eea;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+        }
+
+        .paragraph-section {
+            display: none;
+            text-align: left;
+        }
+
+        .timer {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .paragraph-text {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: #333;
+            text-align: justify;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .questions-section {
+            display: none;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .option {
+            display: block;
+            margin: 10px 0;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(86, 171, 47, 0.3);
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(86, 171, 47, 0.4);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .score-display {
+            background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .score-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .score-text {
+            font-size: 1.3em;
+            color: #666;
+        }
+
+        .score-feedback {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-feedback h3 {
+            color: #333;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .score-feedback p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            font-weight: bold;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .paragraph-text {
+                padding: 20px;
+                font-size: 1em;
+            }
+        }
+      .suggestions-section {
+    background: #f0f8ff;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #4facfe;
+}
+
+.suggestions-section h3 {
+    color: #333;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.suggestions-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.suggestions-section li {
+    background: white;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 8px;
+    color: #555;
+    font-size: 1em;
+    line-height: 1.5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-left: 3px solid #56ab2f;
+    transition: all 0.3s ease;
+}
+
+.suggestions-section li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+
+}
+      .option.correct {
+    background: linear-gradient(45deg, #d4edda, #c3e6cb);
+    border-color: #28a745;
+    color: #155724;
+}
+
+.option.incorrect {
+    background: linear-gradient(45deg, #f8d7da, #f1b0b7);
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+.option.user-selected {
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.answer-indicator {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.answer-indicator.correct {
+    background: #28a745;
+    color: white;
+}
+
+.answer-indicator.incorrect {
+    background: #dc3545;
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="start-screen">
+            <h1>🧠 Focus Test</h1>
+
+            <div class="quiz-info">
+                <h2>About Focus Test</h2>
+                <p>This test measures how well you can focus on deep, complex, and long-context topics. You will read a paragraph, then you will answer 5 questions. You have 100 seconds to read the paragraph. Don't read a sentence twice.</p>
+            </div>
+
+            <div class="language-selector">
+                <label for="language">Choose Language:</label>
+                <select id="language">
+                    <option value="english">English</option>
+                    <option value="turkish">Türkçe</option>
+                    <option value="deutsch">Deutsch</option>
+                    <option value="japanese">日本語</option>
+                    <option value="french">Français</option>
+                </select>
+            </div>
+
+            <button class="start-btn" onclick="startQuiz()">Start Test</button>
+        </div>
+
+        <!-- Paragraf Okuma Ekranı -->
+        <div id="paragraph-screen" class="paragraph-section">
+            <div class="timer" id="timer">Test Duration: 90 seconds</div>
+            <div class="paragraph-text" id="paragraph-text">
+                Paragraph is loading...
+            </div>
+        </div>
+
+        <div id="questions-screen" class="questions-section">
+            <h2>Questions</h2>
+            <div id="questions-container">
+            </div>
+            <button class="submit-btn" onclick="submitAnswers()">Send answers</button>
+        </div>
+
+
+        <div id="results-screen" class="results-section">
+            <h2>Quiz Results</h2>
+            <div class="score-display">
+                <div class="score-number" id="score-number">0/5</div>
+                <div class="score-text" id="score-text">Your Score</div>
+            </div>
+            <div class="score-feedback">
+                <h3 id="score-title">Title</h3>
+                <p id="score-message">Message</p>
+            </div>
+          <div class="suggestions-section">
+    <h3>💡 Suggestions</h3>
+    <ul id="suggestions-list">
+        <!-- Öneriler buraya JavaScript ile yüklenecek -->
+    </ul>
+</div>
+            <button class="restart-btn" onclick="restartQuiz()">Restart</button>
+        </div>
+    </div>
+
+    <script>
+      let correctAnswers = [];
+        let currentLanguage = 'english';
+        let timerInterval;
+        let timeLeft = 100;
+
+        function startQuiz() {
+            currentLanguage = document.getElementById('language').value;
+
+            document.getElementById('start-screen').style.display = 'none';
+
+            document.getElementById('paragraph-screen').style.display = 'block';
+
+            loadParagraph();
+
+            startTimer();
+        }
+
+        function loadParagraph() {
+            fetch(`/api/paragraph/${currentLanguage}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('paragraph-text').textContent = data.paragraph;
+                    } else {
+                        document.getElementById('paragraph-text').textContent = 'Paragraf yüklenemedi.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('paragraph-text').textContent = 'Hata oluştu.';
+                });
+        }
+
+        function startTimer() {
+            timeLeft = 5;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showQuestions();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('timer').textContent = `Duration: ${timeLeft} seconds`;
+
+            const timerElement = document.getElementById('timer');
+            if (timeLeft <= 10) {
+                timerElement.style.background = 'linear-gradient(45deg, #ff4757, #ff3838)';
+            } else if (timeLeft <= 30) {
+                timerElement.style.background = 'linear-gradient(45deg, #ffa502, #ff6348)';
+            }
+        }
+
+        function showQuestions() {
+            document.getElementById('paragraph-screen').style.display = 'none';
+
+            document.getElementById('questions-screen').style.display = 'block';
+
+            loadQuestions();
+        }
+
+        function loadQuestions() {
+            fetch(`/api/questions/${currentLanguage}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayQuestions(data.questions);
+                    } else {
+                        document.getElementById('questions-container').innerHTML = '<p>Sorular yüklenemedi.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('questions-container').innerHTML = '<p>Hata oluştu.</p>';
+                });
+        }
+
+        function displayQuestions(questions) {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+
+                let optionsHtml = '';
+                q.options.forEach((option, optionIndex) => {
+                    optionsHtml += `
+                        <label class="option">
+                            <input type="radio" name="question${index}" value="${optionIndex}">
+                            ${option}
+                        </label>
+                    `;
+                });
+
+                questionCard.innerHTML = `
+                    <div class="question-title">Soru ${index + 1}: ${q.question}</div>
+                    ${optionsHtml}
+                `;
+
+                container.appendChild(questionCard);
+            });
+        }
+
+        function submitAnswers() {
+    const answers = [];
+
+    for (let i = 0; i < 5; i++) {
+        const selected = document.querySelector(`input[name="question${i}"]:checked`);
+        if (selected) {
+            answers.push(parseInt(selected.value));
+        } else {
+            answers.push(-1);
+        }
+    }
+
+    fetch('/api/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ answers: answers })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            correctAnswers = data.correct_answers;
+
+            showAnswerResults(answers);
+
+            showResults(data);
+        } else {
+            alert('Answers couldnt send.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hata oluştu.');
+    });
+}
+function showAnswerResults(userAnswers) {
+    for (let i = 0; i < 5; i++) {
+        const questionCard = document.querySelectorAll('.question-card')[i];
+        const options = questionCard.querySelectorAll('.option');
+
+        options.forEach((option, optionIndex) => {
+            const input = option.querySelector('input[type="radio"]');
+
+            if (optionIndex === correctAnswers[i]) {
+                option.classList.add('correct');
+
+
+                if (!option.querySelector('.answer-indicator')) {
+                    const indicator = document.createElement('span');
+                    indicator.className = 'answer-indicator correct';
+                    indicator.textContent = '✓ Correct';
+                    option.appendChild(indicator);
+                }
+            }
+
+            if (input.checked && optionIndex !== correctAnswers[i]) {
+                option.classList.add('incorrect', 'user-selected');
+
+                if (!option.querySelector('.answer-indicator')) {
+                    const indicator = document.createElement('span');
+                    indicator.className = 'answer-indicator incorrect';
+                    indicator.textContent = '✗ Wrong';
+                    option.appendChild(indicator);
+                }
+            }
+
+            if (input.checked && optionIndex === correctAnswers[i]) {
+                option.classList.add('user-selected');
+            }
+
+            input.disabled = true;
+        });
+    }
+
+    document.querySelector('.submit-btn').style.display = 'none';
+}
+
+        function showResults(data) {
+
+    document.getElementById('results-screen').style.display = 'block';
+
+    document.getElementById('score-number').textContent = `${data.score}/${data.total}`;
+    document.getElementById('score-text').textContent = `Correct Answer Percent: %${data.percentage}`;
+
+    document.getElementById('score-title').textContent = data.score_title;
+    document.getElementById('score-message').textContent = data.score_message;
+
+    const suggestionsList = document.getElementById('suggestions-list');
+    suggestionsList.innerHTML = '';
+
+    if (data.suggestions && data.suggestions.length > 0) {
+        data.suggestions.forEach(suggestion => {
+            const li = document.createElement('li');
+            li.textContent = suggestion;
+            suggestionsList.appendChild(li);
+        });
+    }
+}
+
+        function restartQuiz() {
+
+            document.getElementById('paragraph-screen').style.display = 'none';
+            document.getElementById('questions-screen').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'none';
+
+            document.getElementById('start-screen').style.display = 'block';
+
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            timeLeft = 100;
+        }
+    </script>
+</body>
+</html>
