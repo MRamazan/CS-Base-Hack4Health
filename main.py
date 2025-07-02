@@ -293,5 +293,6 @@ def get_languages():
 
 
 if __name__ == '__main__':
+    import os 
     port = int(os.environ.get('PORT', 8080))  # Railway'nin PORT'unu al, yoksa 8080 kullan
     app.run(host='0.0.0.0', port=port, debug=False)
