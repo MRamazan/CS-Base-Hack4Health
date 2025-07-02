@@ -4,7 +4,7 @@ from flask import Flask, render_template, jsonify, request
 import json
 import os 
 app = Flask(__name__)
-
+app.secret_key = '1903bjk'
 
 
 paragraph_dict = {
