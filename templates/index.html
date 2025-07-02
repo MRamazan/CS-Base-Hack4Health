@@ -364,7 +364,7 @@
 
             <div class="quiz-info">
                 <h2>About Focus Test</h2>
-                <p>This test measures how well you can focus on deep, complex, and long-context topics. You will read a paragraph, then you will answer 5 questions. You have 100 seconds to read the paragraph. Don't read a sentence twice.</p>
+                <p>This test measures how well you can focus on deep, complex, and long-context topics. You will read a paragraph, then you will answer 5 questions. You have 120 seconds to read the paragraph. Don't read a sentence twice.</p>
             </div>
 
             <div class="language-selector">
@@ -383,7 +383,7 @@
 
         <!-- Paragraf Okuma Ekranı -->
         <div id="paragraph-screen" class="paragraph-section">
-            <div class="timer" id="timer">Test Duration: 90 seconds</div>
+            <div class="timer" id="timer">Test Duration: 120 seconds</div>
             <div class="paragraph-text" id="paragraph-text">
                 Paragraph is loading...
             </div>
@@ -421,7 +421,7 @@
       let correctAnswers = [];
         let currentLanguage = 'english';
         let timerInterval;
-        let timeLeft = 100;
+        let timeLeft = 120;
 
         function startQuiz() {
             currentLanguage = document.getElementById('language').value;
@@ -452,7 +452,7 @@
         }
 
         function startTimer() {
-            timeLeft = 100;
+            timeLeft = 110;
             updateTimerDisplay();
 
             timerInterval = setInterval(() => {
@@ -640,7 +640,7 @@ function showAnswerResults(userAnswers) {
                 clearInterval(timerInterval);
             }
 
-            timeLeft = 100;
+            timeLeft = 120;
         }
     </script>
 </body>
